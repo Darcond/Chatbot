@@ -1,45 +1,75 @@
-import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import { Colors } from './src/theme/colors';
 
 const App = () => {
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
-      <View style={styles.header}>
-        <Text style={styles.title}>Asistente Davivienda</Text>
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.welcomeText}>¡Bienvenido! Pronto aquí estará tu chat.</Text>
-      </View>
-    </SafeAreaView>
-  );
+    const [messages, setMessages] = useState<IMessage[]>([]);
+
+    useEffect(() => {
+        setMessages([
+            {
+                _id: '1',
+                text: '¡Bienvenido! Soy tu asistente de Davivienda. ¿En qué puedo ayudarte?',
+                createdAt: new Date(),
+                user: { _id: 2, name: 'Asistente' },
+            },
+        ]);
+    }, []);
+
+    const onSend = useCallback(async (newMessages: IMessage[] = []) => {
+        setMessages((prev) => GiftedChat.append(prev, newMessages));
+        const text = newMessages[0].text;
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text }),
+            });
+            const data = await response.json();
+
+            const botMsg: IMessage = {
+                _id: String(Math.random()),
+                text: data.reply,
+                createdAt: new Date(),
+                user: { _id: 2, name: 'Asistente' },
+            };
+            setMessages((prev) => GiftedChat.append(prev, [botMsg]));
+        } catch (e) {
+            console.error("Error de conexión con FastAPI", e);
+        }
+    }, []);
+
+    return (
+        <SafeAreaProvider>
+            <SafeAreaView style={styles.container} edges={['right', 'bottom', 'left']}>
+                <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
+                <View style={styles.header}>
+                    <Text style={styles.title}>Asistente Davivienda</Text>
+                </View>
+                <View style={styles.chatContainer}>
+                    <GiftedChat
+                        messages={messages}
+                        onSend={(msgs: IMessage[]) => onSend(msgs)}
+                        user={{ _id: 1 }}
+                        textInputProps={{
+                            placeholder: "Escribe un mensaje...",
+                            style: { color: '#000', flex: 1, paddingHorizontal: 10 }
+                        }}
+                    />
+                </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  header: {
-    backgroundColor: Colors.primary,
-    padding: 20,
-    alignItems: 'center',
-  },
-  title: {
-    color: Colors.white,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  welcomeText: {
-    color: Colors.secondary,
-    fontSize: 16,
-  },
+    container: { flex: 1, backgroundColor: Colors.background },
+    header: { backgroundColor: Colors.primary, padding: 20, alignItems: 'center' },
+    title: { color: '#ffffff', fontSize: 20, fontWeight: 'bold' },
+    chatContainer: { flex: 1 },
 });
 
 export default App;
