@@ -1,8 +1,9 @@
 {
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": true,
     "jsx": "react-native",
     "noEmit": true,
@@ -13,7 +14,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true, // <--- ¡Agregado!
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"]
