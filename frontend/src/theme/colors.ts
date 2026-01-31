@@ -1,5 +1,5 @@
 export const Colors = {
-  primary: '#ED1C24',    // Rojo Davivienda
+  primary: '#ED1C24',    // Rojo
   secondary: '#333333',  // Gris oscuro para texto
   background: '#F4F4F4', // Gris muy claro para el fondo del chat
   white: '#FFFFFF',

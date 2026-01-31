@@ -11,7 +11,7 @@ const App = () => {
         setMessages([
             {
                 _id: '1',
-                text: '¡Bienvenido! Soy tu asistente de Davivienda. ¿En qué puedo ayudarte?',
+                text: '¡Bienvenido! Soy tu asistente. ¿En qué puedo ayudarte?',
                 createdAt: new Date(),
                 user: { _id: 2, name: 'Asistente' },
             },
@@ -23,7 +23,7 @@ const App = () => {
         const text = newMessages[0].text;
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/chat', {
+            const response = await fetch('http://localhost:8000/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: text }),
