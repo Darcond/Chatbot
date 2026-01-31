@@ -47,7 +47,7 @@ const App = () => {
             <SafeAreaView style={styles.container} edges={['right', 'bottom', 'left']}>
                 <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
                 <View style={styles.header}>
-                    <Text style={styles.title}>Asistente Davivienda</Text>
+                    <Text style={styles.title}>Asistente</Text>
                 </View>
                 <View style={styles.chatContainer}>
                     <GiftedChat
