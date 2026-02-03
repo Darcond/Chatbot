@@ -21,14 +21,14 @@ El sistema se comunica mediante peticiones HTTP POST, enviando mensajes en forma
 
 ## 🚀 Instalación
 ### Backend
-1. cd backend
-2. python -m venv .venv
-3. .\.venv\Scripts\activate
-4. pip install fastapi uvicorn google-generativeai python-dotenv
+1. Entrar a la carpeta: `cd backend`
+2. Crear entorno virtual: `python -m venv .venv`
+3. Activar entorno: `.\.venv\Scripts\activate`
+4. Instalar librerías: `pip install fastapi uvicorn google-generativeai python-dotenv`
 
 ### Frontend
-1. cd frontend
-2. npm install
+1. Entrar a la carpeta: `cd frontend`
+2. Instalar librerías: `npm install`
 
 ## 🏷️ Versionamiento Semántico
 Este proyecto sigue el estándar de **Semantic Versioning (SemVer)**.
