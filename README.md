@@ -37,9 +37,13 @@ El sistema se comunica mediante peticiones HTTP POST, enviando mensajes en forma
 cd backend
 .\.venv\Scripts\activate
 uvicorn main:app --reload
+```
+
 
 ### 1. Iniciar el FrontEnd
+```bash
 cd frontend
 npx expo start --web
+```
 
 * **v1.0.0**: Lanzamiento inicial.
