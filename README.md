@@ -30,7 +30,16 @@ El sistema se comunica mediante peticiones HTTP POST, enviando mensajes en forma
 1. Entrar a la carpeta: `cd frontend`
 2. Instalar librerías: `npm install`
 
-## 🏷️ Versionamiento Semántico
-Este proyecto sigue el estándar de **Semantic Versioning (SemVer)**.
+## 🏃‍♂️ Ejecución (En terminales separadas)
+
+### 1. Iniciar el Backend (Puerto 8000)
+```bash
+cd backend
+.\.venv\Scripts\activate
+uvicorn main:app --reload
+
+### 1. Iniciar el FrontEnd
+cd frontend
+npx expo start --web
+
 * **v1.0.0**: Lanzamiento inicial.
-"@; Set-Content -Path "README.md" -Value $content -Encoding utf8
