@@ -1,12 +1,15 @@
 $content = @"
-# ChatBot IA 🚀 (v1.0.0)
+# ChatBot IA 🚀 (v1.1.3)
 
 Asistente virtual inteligente. El proyecto utiliza una arquitectura desacoplada con un frontend móvil/web en **React Native** y un backend robusto en **FastAPI** integrado con la última tecnología de **Google Gemini 2.5 Flash**.
 
 ## 🏗️ Arquitectura del Sistema
 El sistema se comunica mediante peticiones HTTP POST, enviando mensajes en formato JSON desde la interfaz de usuario hacia el servidor.
 
-
+### Estructura del Backend (SRP)
+* `config/`: Gestión de variables de entorno y configuración de la API.
+* `services/`: Lógica de negocio y definición de la personalidad del asesor.
+* `main.py`: Punto de entrada y gestión de rutas (Endpoints).
 
 ## 🛠️ Tecnologías Utilizadas
 ### Frontend
