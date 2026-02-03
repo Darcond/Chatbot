@@ -1,25 +1,15 @@
-import os
-import google.generativeai as genai
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from dotenv import load_dotenv
 
-load_dotenv()
+# Importamos nuestras piezas personalizadas
+from config.settings import get_gemini_model
+from services.ai_service import ChatService
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# 1. Inicialización de la App
+app = FastAPI(title="Davivienda ChatBot API")
 
-print("--- BUSCANDO MODELOS DISPONIBLES ---")
-available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-print(f"Modelos encontrados: {available_models}")
-
-selected_model = available_models[0] if available_models else 'gemini-pro'
-print(f"Usando modelo: {selected_model}")
-
-model = genai.GenerativeModel(selected_model)
-
-app = FastAPI()
-
+# 2. Configuración de Seguridad (CORS)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,22 +18,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 3. Inicialización de Componentes (Inyección de dependencias simple)
+# settings.py se encarga de buscar el modelo
+gemini_model = get_gemini_model()
+# ai_service.py se encarga de la lógica del asesor
+chat_service = ChatService(gemini_model)
+
+# 4. Modelo de datos
 class ChatMessage(BaseModel):
     message: str
 
+# 5. Punto de entrada (Endpoint)
 @app.post("/chat")
 async def chat(data: ChatMessage):
-    try:
-        user_text = data.message
-        
-        model_name = 'gemini-1.5-flash' 
-        
-        contexto = "Eres un asesor experto de un Banco. Responde de forma concisa."
-        
-        response = model.generate_content(f"{contexto}\nUsuario: {user_text}")
-        
-        return {"reply": response.text}
-        
-    except Exception as e:
-        print(f"Error detectado: {e}")
-        return {"reply": "Lo siento, tuve un problema técnico. ¿Podemos intentarlo de nuevo?"}
+    # Delegamos la respuesta al servicio especializado
+    reply = await chat_service.get_chat_response(data.message)
+    return {"reply": reply}
+
+# Opcional: Ruta de salud para verificar que el servidor vive
+@app.get("/")
+def read_root():
+    return {"status": "online", "bank": "Davivienda"}
